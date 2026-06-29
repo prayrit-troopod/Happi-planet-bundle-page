@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Build Your Bundle | Happi Planet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ DESIGN TOKENS (matched to Happi Planet brand) ============ */
+:root{
+  --teal-900:#003e3d;   /* deep heading teal */
+  --teal-700:#00605e;
+  --teal-500:#108474;
+  --green:#2c874a;
+  --gold:#c7981f;
+  --gold-soft:#efd080;
+  --cream:#fdf7e6;      /* banner accent cream-yellow */
+  --cream-2:#f7eecb;
+  --ink:#16140d;
+  --ink-2:#4d4d4d;
+  --line:#e7ece8;
+  --bg:#ffffff;
+  --bg-green:#eef6f0;   /* soft green section bg */
+  --bg-green-2:#e2f0e7;
+  --shadow:0 6px 24px rgba(0,62,61,.08);
+  --shadow-lg:0 14px 40px rgba(0,62,61,.16);
+  --radius:16px;
+  --maxw:1240px;
+  --rail:360px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.display{font-family:'Poppins',sans-serif;color:var(--teal-900);line-height:1.05;letter-spacing:-.01em}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px}
+.gold-text{color:var(--gold)}
+.muted{color:var(--ink-2)}
+
+/* ============ ANNOUNCEMENT TICKER ============ */
+.ticker{background:var(--teal-900);color:#fff;font-size:13px;font-weight:600;overflow:hidden;white-space:nowrap}
+.ticker .track{display:inline-flex;gap:48px;padding:9px 0;animation:scroll 26s linear infinite}
+.ticker .track span{display:inline-flex;align-items:center;gap:8px}
+.ticker .track b{color:var(--gold-soft)}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ============ HEADER ============ */
+header{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line)}
+.hdr{display:flex;align-items:center;gap:18px;padding:12px 18px;max-width:var(--maxw);margin:0 auto}
+.hdr .logo img{height:40px;width:auto}
+.hdr nav{display:none;gap:22px;margin-left:8px;font-weight:600;font-size:14.5px}
+.hdr nav a{padding:6px 0;color:var(--teal-900);position:relative}
+.hdr nav a:hover{color:var(--green)}
+.hdr .spacer{flex:1}
+.icon-btn{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;color:var(--teal-900);position:relative}
+.icon-btn:hover{background:var(--bg-green)}
+.icon-btn svg{width:22px;height:22px}
+.cart-count{position:absolute;top:2px;right:2px;background:var(--gold);color:#fff;font-size:11px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
+.hamb{display:grid}
+@media(min-width:980px){.hdr nav{display:flex}.hamb{display:none}}
+
+/* ============ HERO ============ */
+.hero{position:relative;background:var(--bg-green-2)}
+.hero picture{display:block}
+.hero img{width:100%;height:auto;object-fit:cover;display:block}
+/* mobile uses a dedicated portrait banner shown at its natural aspect */
+@media(max-width:767px){.hero img{height:auto}}
+.hero .hero-cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:14px 18px 4px}
+.hero .hero-cta a{font-weight:700;font-size:14px;padding:11px 18px;border-radius:999px;display:inline-flex;align-items:center;gap:7px}
+.hero .hero-cta a .i-arr{width:16px;height:16px}
+.btn-primary{background:var(--teal-900);color:#fff!important}
+.btn-primary:hover{background:var(--teal-700)}
+.btn-ghost{background:#fff;color:var(--teal-900)!important;border:1.5px solid var(--teal-900)}
+
+/* ============ HOW IT WORKS ============ */
+.how{background:#fff;padding:22px 0 6px}
+.how .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.how .step{padding:6px 4px}
+.how .step .n{width:34px;height:34px;border-radius:50%;background:var(--teal-900);color:var(--gold-soft);font-family:'Poppins';font-weight:800;display:grid;place-items:center;margin:0 auto 8px}
+.how .step b{display:block;font-family:'Poppins';color:var(--teal-900);font-size:14px}
+.how .step span{font-size:12px;color:var(--ink-2)}
+@media(min-width:768px){.how .step b{font-size:16px}.how .step span{font-size:13px}}
+
+/* ============ SECTION HEADINGS ============ */
+.sec{padding:30px 0}
+.sec-head{text-align:center;margin-bottom:20px}
+.sec-head .eyebrow{font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;color:var(--green)}
+.sec-head h2{font-size:30px;font-weight:800;margin-top:4px}
+.sec-head p{color:var(--ink-2);margin-top:6px;font-size:14.5px}
+@media(min-width:768px){.sec-head h2{font-size:38px}}
+
+/* ============ TIER SELECTOR (ANCHORING) ============ */
+.tiers{display:grid;grid-template-columns:1fr;gap:14px;max-width:920px;margin:0 auto}
+@media(min-width:720px){.tiers{grid-template-columns:repeat(3,1fr)}}
+.tier{position:relative;border:2px solid var(--line);border-radius:var(--radius);background:#fff;padding:22px 18px 18px;text-align:center;transition:.18s;cursor:pointer}
+.tier:hover{border-color:var(--teal-500);transform:translateY(-3px);box-shadow:var(--shadow)}
+.tier.active{border-color:var(--teal-900);box-shadow:var(--shadow)}
+.tier.popular{border-color:var(--gold);background:linear-gradient(180deg,#fffdf4,#fff)}
+.tier .flag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;padding:5px 14px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.tier .qty{font-family:'Poppins';font-weight:800;font-size:20px;color:var(--teal-900)}
+.tier .qty small{font-size:13px;color:var(--ink-2);font-weight:600;display:block;font-family:'Inter'}
+.tier .big{font-family:'Poppins';font-weight:800;font-size:40px;color:var(--teal-900);margin:8px 0 0;line-height:1}
+.tier .big sup{font-size:20px;top:-.5em}
+.tier .perunit{font-size:13px;color:var(--ink-2);margin-top:2px}
+.tier .save{display:inline-block;margin-top:10px;background:var(--bg-green-2);color:var(--teal-700);font-weight:700;font-size:12.5px;padding:5px 12px;border-radius:999px}
+.tier .pick{margin-top:14px;width:100%;padding:11px;border-radius:10px;font-weight:700;background:#fff;border:1.5px solid var(--teal-700);color:var(--teal-700);display:flex;align-items:center;justify-content:center;gap:6px}
+.tier .pick .i-chk{width:15px;height:15px}
+.tier .flag .i-star{width:13px;height:13px;vertical-align:-.1em}
+/* selected bundle = solid primary fill; unselected = white bg + primary border (default .pick above) */
+.tier.active .pick{background:var(--teal-700);color:#fff;border-color:var(--teal-700)}
+
+/* ============ QUICK-START BUNDLES ============ */
+/* horizontal carousel (saves vertical space) */
+.qs{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 2px 12px}
+.qs::-webkit-scrollbar{display:none}
+.qcard{flex:0 0 85%;max-width:330px;scroll-snap-align:center;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;box-shadow:var(--shadow);display:flex;flex-direction:column}
+@media(min-width:680px){.qcard{flex:0 0 320px;scroll-snap-align:start}}
+/* once all cards fit, centre them (still scrolls below this width) */
+@media(min-width:1024px){.qs{justify-content:center}}
+.qcard .qimg{background:var(--bg-green);display:flex;gap:2px;padding:14px;justify-content:center}
+.qcard .qimg img{width:33%;height:120px;object-fit:contain;border-radius:8px}
+.qcard .qbody{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.qcard h3{font-size:18px;font-weight:700}
+.qcard .qmeta{font-size:13px;color:var(--ink-2);flex:1}
+.qcard .qprice{display:flex;align-items:baseline;gap:8px;margin-top:4px}
+.qcard .qprice b{font-family:'Poppins';font-size:22px;color:var(--teal-900)}
+.qcard .qprice s{color:#9aa;font-size:14px}
+.qcard .qprice .pct{margin-left:auto;background:var(--gold);color:#fff;font-weight:700;font-size:12px;padding:3px 9px;border-radius:999px}
+.qcard .qadd{margin-top:10px;background:var(--teal-900);color:#fff;font-weight:700;padding:12px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:7px}
+.qcard .qadd .i-arr{width:16px;height:16px}
+.qcard .qadd:hover{background:var(--teal-700)}
+
+/* ============ TRUST BAND ============ */
+.trust{background:var(--teal-900);color:#fff;overflow:hidden}
+.trust-marquee{overflow:hidden;white-space:nowrap}
+.tm-track{display:inline-flex;align-items:center;padding:15px 0;animation:scroll 26s linear infinite;will-change:transform}
+.tm-item{display:inline-flex;align-items:center;gap:10px;font-family:'Poppins';font-weight:600;font-size:15px;white-space:nowrap;padding:0 28px;position:relative}
+.tm-item::after{content:"";position:absolute;right:0;top:50%;transform:translateY(-50%);width:5px;height:5px;border-radius:50%;background:var(--gold-soft);opacity:.55}
+.tm-item svg{width:22px;height:22px;color:var(--gold-soft);flex:0 0 auto}
+
+/* ============ PRODUCT GRID + LAYOUT WITH RAIL ============ */
+.shop-layout{display:block}
+@media(min-width:1080px){
+  .shop-layout{display:grid;grid-template-columns:1fr var(--rail);gap:28px;align-items:start}
+}
+/* mobile: tags on one scrollable line, search below */
+.filters{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.chips{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;white-space:nowrap;padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);font-weight:600;font-size:13.5px;color:var(--teal-900);background:#fff}
+.chip.active{background:var(--teal-900);color:#fff;border-color:var(--teal-900)}
+.filters .srch{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:999px;padding:9px 14px;width:100%}
+@media(min-width:768px){
+  .filters{flex-direction:row;flex-wrap:wrap;align-items:center}
+  .chips{overflow:visible;flex-wrap:wrap}
+  .filters .srch{margin-left:auto;width:auto;min-width:180px;padding:7px 14px}
+}
+.filters .srch input{border:none;outline:none;font-size:14px;width:100%;background:none}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:760px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1080px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1240px){.grid{grid-template-columns:repeat(4,1fr)}}
+
+.card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:.16s;position:relative}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.card .imgwrap{position:relative;aspect-ratio:1/1;overflow:hidden;background:#f4f7f4}
+.card .imgwrap img{width:100%;height:100%;object-fit:cover}
+.card .badge{position:absolute;top:8px;left:8px;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:6px;color:#fff;z-index:2}
+.badge.best,.badge.deal,.badge.new{background:var(--teal-700)}
+.card .savetag{position:absolute;top:8px;right:8px;background:var(--gold);color:#fff;font-weight:800;font-size:11px;padding:4px 8px;border-radius:6px;z-index:2}
+.card .cbody{padding:11px 12px 12px;display:flex;flex-direction:column;gap:5px;flex:1}
+.card .rname{font-weight:600;font-size:13.5px;line-height:1.25;min-height:34px}
+.card .rev{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--ink-2)}
+.card .rev .stars{color:var(--gold)}
+.card .price{display:flex;align-items:baseline;gap:7px;margin-top:auto}
+.card .price b{font-family:'Poppins';font-size:18px;color:var(--teal-900)}
+.card .price s{font-size:13px;color:#9aa}
+.card .sizesel{width:100%;margin-top:7px;padding:9px 30px 9px 11px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--teal-900);background-color:#fff;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300605e' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;-webkit-appearance:none;appearance:none;cursor:pointer}
+.card .sizesel:focus{outline:none;border-color:var(--teal-500)}
+.card .add{margin-top:8px;background:var(--bg-green-2);color:var(--teal-900);font-weight:700;font-size:13.5px;padding:10px;border-radius:9px;display:flex;align-items:center;justify-content:center;gap:6px;transition:.14s}
+.card .add:hover{background:var(--teal-900);color:#fff}
+.card .add.in{background:var(--teal-900);color:#fff}
+.card.sold .imgwrap img{filter:grayscale(.7);opacity:.55}
+.card .soldout{position:absolute;inset:0;display:grid;place-items:center;z-index:3}
+.card .soldout span{background:#fff;color:var(--ink);font-weight:700;font-size:12px;padding:8px 14px;border-radius:8px;box-shadow:var(--shadow)}
+.qtybox{display:flex;align-items:center;justify-content:space-between;margin-top:8px;background:var(--teal-900);color:#fff;border-radius:9px;overflow:hidden}
+.qtybox button{color:#fff;font-size:20px;font-weight:700;width:40px;height:40px}
+.qtybox span{font-weight:700}
+
+/* ============ STICKY BUNDLE SUMMARY (RAIL) ============ */
+.rail{display:none}
+@media(min-width:1080px){
+  .rail{display:block;position:sticky;top:88px}
+}
+.summary{border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow);overflow:hidden}
+.summary .shead{background:var(--teal-900);color:#fff;padding:14px 16px}
+.summary .shead h3{color:#fff;font-size:17px}
+.summary .shead p{font-size:12.5px;color:#bfe0d9;margin-top:2px}
+.prog{padding:16px 16px 14px;border-bottom:1px solid var(--line)}
+.ladder{position:relative;margin:6px 14px 32px}
+.ladder .bar{height:10px;background:var(--bg-green-2);border-radius:99px;overflow:hidden}
+.ladder .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--teal-500));border-radius:99px;transition:width .45s ease}
+.ck{position:absolute;top:-4px;width:0;text-align:center}
+.ck-dot{display:flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--bg-green-2);color:var(--ink-2);font-size:10px;font-weight:700;margin:0 auto;position:relative;z-index:2;transform:translateX(-50%);transition:.25s}
+.ck.hit .ck-dot{background:var(--green);border-color:var(--green);color:#fff}
+.ck-dot svg{width:11px;height:11px}
+.ck-lab{position:absolute;top:22px;left:0;transform:translateX(-50%);font-size:10.5px;font-weight:700;color:var(--ink-2);white-space:nowrap}
+.ck.hit .ck-lab{color:var(--green)}
+.ck.ck-end .ck-lab{transform:translateX(-82%)}
+.prog .nudge{font-size:13px;font-weight:600;color:var(--teal-700);margin-top:9px;display:flex;gap:6px;align-items:flex-start}
+.prog .nudge.done{color:var(--green)}
+.slots{display:flex;gap:8px;padding:14px 16px 8px;flex-wrap:wrap}
+.slot{width:54px;height:54px;border-radius:10px;border:1.5px dashed var(--line);background:var(--bg-green);display:grid;place-items:center;position:relative;flex:0 0 auto}
+.slot.filled{border-style:solid;border-color:var(--teal-500);background:#fff}
+.slot img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.slot .rm{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#cb2711;color:#fff;font-size:12px;line-height:18px;text-align:center;font-weight:700}
+.slot.add-extra{border-color:var(--gold);color:var(--gold);font-size:24px;cursor:pointer;background:#fffdf4}
+.lines{padding:6px 16px;max-height:170px;overflow:auto}
+.lines .li{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+.lines .li img{width:34px;height:34px;object-fit:contain;border-radius:6px;background:var(--bg-green)}
+.lines .li .nm{flex:1;line-height:1.2}
+.lines .li .qc{display:flex;align-items:center;gap:7px}
+.lines .li .qc button{width:22px;height:22px;border-radius:6px;background:var(--bg-green-2);color:var(--teal-900);font-weight:700;font-size:15px}
+.gift{margin:6px 16px;padding:11px 12px;border-radius:10px;background:var(--cream);border:1px dashed var(--gold);font-size:12.5px;display:flex;gap:9px;align-items:center}
+.gift.unlocked{background:var(--bg-green-2);border-color:var(--green);border-style:solid}
+.gift b{color:var(--teal-900)}
+.totals{padding:14px 16px 4px}
+.totals .r{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:6px;color:var(--ink-2)}
+.totals .r.save{color:var(--green);font-weight:700}
+.totals .r.grand{font-size:17px;color:var(--ink);font-weight:700;border-top:1px solid var(--line);padding-top:10px;margin-top:4px}
+.totals .r.grand b{font-family:'Poppins';font-size:24px;color:var(--teal-900)}
+.totals .r.grand s{font-size:14px;color:#9aa;font-weight:500;margin-left:6px}
+.checkout{margin:10px 16px 6px;width:calc(100% - 32px);background:var(--teal-700);color:#fff;font-family:'Poppins';font-weight:800;font-size:16px;padding:15px;border-radius:12px;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.checkout:hover{background:var(--teal-900)}
+.checkout:disabled{background:var(--line);color:#9aa;cursor:not-allowed}
+.guar{text-align:center;font-size:11.5px;color:var(--ink-2);padding:0 16px 14px;display:flex;gap:6px;align-items:center;justify-content:center}
+.guar svg{width:14px;height:14px;color:var(--green)}
+
+/* ============ REVIEWS ============ */
+.revs{background:var(--bg-green)}
+.revgrid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:680px){.revgrid{grid-template-columns:repeat(3,1fr)}}
+.rcard{background:#fff;border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.rcard .stars{color:var(--gold);font-size:15px}
+.rcard p{font-size:14px;margin:8px 0 12px}
+.rcard .who{display:flex;align-items:center;gap:10px}
+.rcard .who img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:var(--bg-green)}
+.rcard .who b{font-size:13.5px;display:block;color:var(--teal-900)}
+.rcard .who span{font-size:12px;color:var(--ink-2)}
+
+/* ============ FAQ ============ */
+.faqs{max-width:760px;margin:0 auto}
+.faq{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff}
+.faq summary{padding:16px 18px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--teal-900)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pl{font-size:22px;color:var(--green);transition:.2s}
+.faq[open] summary .pl{transform:rotate(45deg)}
+.faq .ans{padding:0 18px 16px;font-size:14px;color:var(--ink-2)}
+
+/* ============ FOOTER ============ */
+footer{background:var(--teal-900);color:#cfe3df;padding:40px 0 184px}
+@media(min-width:1080px){footer{padding-bottom:40px}}
+.fcols{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(min-width:768px){.fcols{grid-template-columns:2fr 1fr 1fr 1.4fr}}
+.fcols h4{color:#fff;font-family:'Poppins';font-size:15px;margin-bottom:12px}
+.fcols a,.fcols p{font-size:13.5px;color:#cfe3df;display:block;margin-bottom:8px}
+.fcols a:hover{color:#fff}
+.flogo{height:42px;margin-bottom:12px;filter:brightness(0) invert(1)}
+.fnews input{width:100%;padding:12px;border-radius:9px;border:none;font-size:14px;margin-bottom:8px}
+.fnews button{width:100%;background:var(--gold);color:#16140d;font-weight:700;padding:12px;border-radius:9px}
+.fbottom{border-top:1px solid rgba(255,255,255,.15);margin-top:28px;padding-top:18px;font-size:12.5px;text-align:center}
+
+/* ============ MOBILE BUNDLE BAR ============ */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:70;background:#fff;border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(0,62,61,.12);padding:9px 14px calc(9px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:7px}
+@media(min-width:1080px){.mbar{display:none}}
+.mbar-row{display:flex;align-items:center;gap:12px}
+.mslots{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:1px}
+.mslots::-webkit-scrollbar{display:none}
+.mslots .slot{width:42px;height:42px;border-radius:9px}
+.mslots .slot.add-extra svg{width:18px;height:18px}
+.mbar .mprog{flex:1;min-width:0}
+.mbar .mprog .ptxt{font-size:12px;font-weight:600;color:var(--teal-700);margin-bottom:5px;line-height:1.2}
+.mbar .ladder{margin:7px 10px 24px 4px}
+.mbar .ladder .bar{height:8px}
+.mbar .ck-lab{font-size:10px}
+.mbar .mco{background:var(--teal-700);color:#fff;font-family:'Poppins';font-weight:800;font-size:15px;padding:12px 20px;border-radius:11px;white-space:nowrap;display:flex;flex-direction:column;align-items:center;line-height:1.12}
+.mbar .mco small{font-size:10.5px;font-weight:600}
+.mbar .mco:disabled{background:var(--line);color:#9aa}
+.mbar .mprog{cursor:pointer}
+
+/* ============ SHEET (mobile bundle detail) ============ */
+.sheet-bg{position:fixed;inset:0;background:rgba(0,40,38,.5);z-index:80;opacity:0;pointer-events:none;transition:.25s}
+.sheet-bg.open{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:81;background:#fff;border-radius:20px 20px 0 0;transform:translateY(100%);transition:.3s;max-height:86vh;overflow:auto}
+.sheet.open{transform:translateY(0)}
+.sheet .sclose{position:sticky;top:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--line);z-index:2}
+.sheet .sclose h3{font-size:18px}
+.sheet .sclose button{font-size:26px;color:var(--ink-2);line-height:1}
+
+/* ============ TOAST + CONFETTI ============ */
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:var(--teal-900);color:#fff;padding:13px 20px;border-radius:12px;font-weight:600;font-size:14px;z-index:120;opacity:0;pointer-events:none;transition:.3s;box-shadow:var(--shadow-lg);display:flex;gap:9px;align-items:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast svg{width:18px;height:18px;color:var(--gold-soft)}
+@media(min-width:1080px){.toast{bottom:30px}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:130;overflow:hidden}
+.confetti i{position:absolute;width:9px;height:14px;top:-20px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ============ INLINE ICONS (hand-built SVG, no emoji/glyphs) ============ */
+.i-star,.i-arr,.i-chk,.i-gift{display:inline-block;vertical-align:-.14em}
+.i-star{width:1em;height:1em}
+.i-arr{width:1.05em;height:1.05em}
+.i-chk{width:1em;height:1em}
+.i-gift{width:1.15em;height:1.15em;vertical-align:-.22em}
+.ticker .ti{width:15px;height:15px;flex:0 0 auto;color:var(--gold-soft)}
+.card .rev .i-star{color:var(--gold)}
+.rcard .stars .i-star{width:16px;height:16px;color:var(--gold);margin-right:1px}
+.card .add svg{width:15px;height:15px;flex:0 0 auto}
+.qtybox button svg{width:18px;height:18px}
+.lines .li .qc button svg{width:13px;height:13px}
+.slot .rm svg{width:11px;height:11px;display:block;margin:3.5px auto}
+.slot.add-extra svg{width:22px;height:22px}
+.sclose button svg{width:22px;height:22px;display:block}
+.faq .pl svg{width:18px;height:18px;display:block}
+.gift svg.i-gift{color:var(--gold)}
+.guar .i-arr{color:var(--gold)}
+.fcontact{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13.5px;color:#cfe3df}
+.fcontact svg{width:16px;height:16px;flex:0 0 auto;color:var(--gold-soft)}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="track">
+    <span><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5h13v10H1z"/><path d="M14 8h4l3 3v4h-7z"/><circle cx="5" cy="17.5" r="1.7"/><circle cx="17.5" cy="17.5" r="1.7"/></svg><span><b>FREE shipping</b> on every bundle across India</span></span>
+    <span><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 20C4 11.2 11.2 4 20 4c0 8.8-7.2 16-16 16z"/><path d="M4.5 19.5C8.5 13 13 10.5 17 9"/></svg><span><b>100% plant-based</b> &amp; non-toxic</span></span>
+    <span><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.2" y="9.5" width="17.6" height="10.5" rx="1.2"/><path d="M3.2 13.6h17.6M12 9.5V20"/><path d="M12 9.5C9.6 9.5 7.7 8.1 8.3 6.2 8.8 4.7 11 5.1 12 9.5c1-4.4 3.2-4.8 3.7-3.3.6 1.9-1.3 3.3-3.7 3.3z"/></svg><span>Build any <b>5-pack</b> &amp; get a <b>FREE Eterniti bottle</b></span></span>
+    <span><svg class="ti" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><span>Loved by <b>50,000+</b> happy homes</span></span>
+    <span><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5h13v10H1z"/><path d="M14 8h4l3 3v4h-7z"/><circle cx="5" cy="17.5" r="1.7"/><circle cx="17.5" cy="17.5" r="1.7"/></svg><span><b>FREE shipping</b> on every bundle across India</span></span>
+    <span><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 20C4 11.2 11.2 4 20 4c0 8.8-7.2 16-16 16z"/><path d="M4.5 19.5C8.5 13 13 10.5 17 9"/></svg><span><b>100% plant-based</b> &amp; non-toxic</span></span>
+    <span><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.2" y="9.5" width="17.6" height="10.5" rx="1.2"/><path d="M3.2 13.6h17.6M12 9.5V20"/><path d="M12 9.5C9.6 9.5 7.7 8.1 8.3 6.2 8.8 4.7 11 5.1 12 9.5c1-4.4 3.2-4.8 3.7-3.3.6 1.9-1.3 3.3-3.7 3.3z"/></svg><span>Build any <b>5-pack</b> &amp; get a <b>FREE Eterniti bottle</b></span></span>
+    <span><svg class="ti" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><span>Loved by <b>50,000+</b> happy homes</span></span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <button class="icon-btn hamb" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a class="logo" href="#"><img src="img/Happi_Planet_-_Brand_Color_1_eer_180x_69c215c4-391d-48e8-948d-7a43bbfda874.avif" alt="Happi Planet"></a>
+    <nav>
+      <a href="#tiers">How It Works</a>
+      <a href="#shop">Shop the Bundle</a>
+      <a href="#quickstart">Curated Boxes</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQs</a>
+    </nav>
+    <div class="spacer"></div>
+    <button class="icon-btn" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+    </button>
+    <button class="icon-btn" id="cartBtn" aria-label="Bundle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6L5 3H2"/></svg>
+      <span class="cart-count" id="hdrCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <picture>
+    <source media="(max-width:767px)" srcset="img/New_Website_Banner-1080x1350_jpg.webp">
+    <img src="img/New_Website_Banner-1920x600_jpg.webp" alt="Buy More, Save More. Build your Happi Planet bundle">
+  </picture>
+  <div class="hero-cta">
+    <a href="#tiers" class="btn-primary">Shop Bundles <svg class="i-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+    <a href="#quickstart" class="btn-ghost">Shop Curated Boxes</a>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<div class="how">
+  <div class="wrap">
+    <div class="steps">
+      <div class="step"><div class="n">1</div><b>Pick a pack size</b><span>2, 3 or 5 products</span></div>
+      <div class="step"><div class="n">2</div><b>Add your favourites</b><span>Mix &amp; match any category</span></div>
+      <div class="step"><div class="n">3</div><b>Save up to 36%</b><span>+ free shipping &amp; gift</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TIER SELECTOR -->
+<section class="sec" id="tiers">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Step 1: Choose your savings</div>
+      <h2>The more you add, the more you save</h2>
+      <p>Every product is yours at one flat bundle price. Pick a pack, then size up anytime.</p>
+    </div>
+    <div class="tiers" id="tierWrap"></div>
+  </div>
+</section>
+
+<!-- QUICK-START CURATED BUNDLES -->
+<section class="sec" id="quickstart" style="background:var(--bg-green);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Not sure where to start?</div>
+      <h2>One-tap curated boxes</h2>
+      <p>Our best-selling combos, pre-built by the Happi Planet team. Tap to load the whole box.</p>
+    </div>
+    <div class="qs" id="qsWrap"></div>
+  </div>
+</section>
+
+<!-- TRUST BAND -->
+<section class="trust">
+  <div class="trust-marquee" aria-hidden="true">
+    <div class="tm-track" id="tmTrack"></div>
+  </div>
+</section>
+
+<!-- SHOP + RAIL -->
+<section class="sec" id="shop">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Step 2: Fill your box</div>
+      <h2>Add your favourites</h2>
+    </div>
+    <div class="shop-layout">
+      <div>
+        <div class="filters">
+          <div class="chips">
+            <button class="chip active" data-cat="all">All</button>
+            <button class="chip" data-cat="Kitchen">Kitchen</button>
+            <button class="chip" data-cat="Laundry">Laundry</button>
+            <button class="chip" data-cat="Home">Home</button>
+            <button class="chip" data-cat="Skin">Skin</button>
+          </div>
+          <label class="srch">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+            <input type="text" id="search" placeholder="Search products…">
+          </label>
+        </div>
+        <div class="grid" id="grid"></div>
+      </div>
+      <!-- DESKTOP RAIL -->
+      <aside class="rail">
+        <div class="summary" id="summary"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="sec revs" id="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Real homes, real results</div>
+      <h2>What people are saying</h2>
+    </div>
+    <div class="revgrid">
+      <div class="rcard">
+        <div class="stars" aria-label="5 out of 5 stars"><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg></div>
+        <p>"Switched my whole kitchen to Happi Planet. The bundle made it so affordable, and the foaming kitchen cleaner is genuinely better than my old chemical one."</p>
+        <div class="who"><img src="img/KitchenCleanerWebsiteImages-01.webp" alt=""><div><b>Ananya R.</b><span>Bengaluru, Verified buyer</span></div></div>
+      </div>
+      <div class="rcard">
+        <div class="stars" aria-label="5 out of 5 stars"><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg></div>
+        <p>"Built the 5-pack and got a free Eterniti bottle. No harsh smell, safe around my toddler. This is the way cleaning products should be."</p>
+        <div class="who"><img src="img/1lt_Website_Images_Laundry_Detergent-01.webp" alt=""><div><b>Karthik M.</b><span>Hyderabad, Verified buyer</span></div></div>
+      </div>
+      <div class="rcard">
+        <div class="stars" aria-label="5 out of 5 stars"><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg><svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg></div>
+        <p>"Love that I can mix laundry, kitchen and skin in one bundle. Ordered the Complete Home box, saved over ₹400 and my house smells amazing."</p>
+        <div class="who"><img src="img/WebsiteImagesHydratingHandwash-01.webp" alt=""><div><b>Priya S.</b><span>Mumbai, Verified buyer</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Good to know</div><h2>Bundle FAQs</h2></div>
+    <div class="faqs">
+      <details class="faq"><summary>How does the bundle pricing work?<span class="pl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Pick any 2, 3 or 5 products from the grid and pay one flat bundle price (₹349 / ₹499 / ₹799). You can mix and match across any category: laundry, kitchen, home and skin.</div></details>
+      <details class="faq"><summary>What is the free Eterniti bottle offer?<span class="pl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Build any 5-product bundle (₹799) and we'll automatically add a complimentary Eterniti reusable bottle to your order, no code needed.</div></details>
+      <details class="faq"><summary>Is shipping really free?<span class="pl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Every bundle ships free across India. Most orders are delivered within 2 to 4 working days.</div></details>
+      <details class="faq"><summary>What if I don't love a product?<span class="pl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">We offer a 7-day no-questions-asked return on your bundle. Reach us at hello@happi-planet.com.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="fcols">
+      <div>
+        <img class="flogo" src="img/Happi_Planet_-_Brand_Color_1_eer_180x_69c215c4-391d-48e8-948d-7a43bbfda874.avif" alt="Happi Planet">
+        <p>Plant-based, non-toxic home &amp; personal care, kinder to your family and the planet.</p>
+        <div class="fcontact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a12 12 0 0 0 6 6L15 14l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 3 5a1 1 0 0 1 1-1z"/></svg>+91 9930 123 234</div>
+        <div class="fcontact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>hello@happi-planet.com</div>
+      </div>
+      <div><h4>Shop</h4><a href="#">Laundry</a><a href="#">Kitchen</a><a href="#">Home</a><a href="#">Skin</a><a href="#">Eterniti Bottles</a></div>
+      <div><h4>About</h4><a href="#">How It Works</a><a href="#">Sustainability</a><a href="#">FAQs</a><a href="#">Contact Us</a></div>
+      <div class="fnews">
+        <h4>Join the Happi Squad</h4>
+        <p>Get ₹100 off your first bundle.</p>
+        <input type="email" placeholder="Your email" id="newsEmail">
+        <button onclick="news()">Get my ₹100 off</button>
+      </div>
+    </div>
+    <div class="fbottom">Copyright 2026 Happi Planet Eco Products Private Limited. Made for a cleaner planet.</div>
+  </div>
+</footer>
+
+<!-- MOBILE BUNDLE BAR -->
+<div class="mbar" id="mbar">
+  <div class="mslots" id="mSlots"></div>
+  <div class="mbar-row">
+    <div class="mprog" onclick="openSheet()" title="View your bundle">
+      <div class="ptxt" id="mPtxt">Add 2 products to start your bundle</div>
+      <div id="mLadder"></div>
+    </div>
+    <button class="mco" id="mCheckout" disabled onclick="checkout()">
+      <span id="mCoTop">Checkout</span>
+      <small id="mCoSub">₹0</small>
+    </button>
+  </div>
+</div>
+
+<!-- MOBILE SHEET -->
+<div class="sheet-bg" id="sheetBg" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="sclose"><h3>Your Bundle</h3><button onclick="closeSheet()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="summary" id="summaryMobile" style="border:none;box-shadow:none;border-radius:0"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg><span id="toastMsg">Added</span></div>
+
+<script>
+/* ================= ICONS (hand-built SVG) ================= */
+const ICON={
+  star:'<svg class="i-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26 6.85.6-5.18 4.55 1.55 6.7L12 17.9 5.88 20.7l1.55-6.7L2.25 8.86l6.85-.6z"/></svg>',
+  arrow:'<svg class="i-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>',
+  check:'<svg class="i-chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>',
+  gift:'<svg class="i-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="3.2" y="9.5" width="17.6" height="10.5" rx="1.2"/><path d="M3.2 13.6h17.6M12 9.5V20"/><path d="M12 9.5C9.6 9.5 7.7 8.1 8.3 6.2 8.8 4.7 11 5.1 12 9.5c1-4.4 3.2-4.8 3.7-3.3.6 1.9-1.3 3.3-3.7 3.3z"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+  minus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>',
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+};
+const stars5='<span class="stars" aria-label="5 out of 5 stars">'+ICON.star.repeat(5)+'</span>';
+
+/* ================= DATA ================= */
+const IMG='img/';
+// size/pack templates (mirrors the live homepage variant selector).
+// index 0 is always the standard size the bundle tier price is built around.
+const SZ_ML=(b,bm)=>[
+  {label:'500 ML', price:b, mrp:bm},
+  {label:'1 L (Value Pack)', price:b+160, mrp:bm+250},
+  {label:'1.5 L (Super Value Pack)', price:b+300, mrp:bm+450},
+];
+const SZ_PACK=(b,bm)=>[
+  {label:'Pack of 1 | 1L', price:b, mrp:bm},
+  {label:'Pack of 2 | 2L (Best Value)', price:Math.round(b*1.8), mrp:bm*2},
+  {label:'Pack of 3 | 3L (Super Saver)', price:Math.round(b*2.6), mrp:bm*3},
+];
+const PRODUCTS=[
+  {id:'kitchen', name:'Foaming Kitchen Cleaner', img:'KitchenCleanerWebsiteImages-01.webp', price:200, mrp:299, rev:573, rating:4.9, cat:'Kitchen', badge:'best', sizes:SZ_ML(200,299)},
+  {id:'detergent', name:'Natural Laundry Detergent', img:'1lt_Website_Images_Laundry_Detergent-01.webp', price:249, mrp:299, rev:215, rating:4.8, cat:'Laundry', badge:'best', sizes:SZ_PACK(249,299)},
+  {id:'floor', name:'Herbal Floor Cleaner', img:'1lt_Website_Images_Floor_Cleaner-01.webp', price:249, mrp:299, rev:156, rating:4.8, cat:'Home', badge:'best', sizes:SZ_PACK(249,299)},
+  {id:'dishwash', name:'Dishwash Liquid Gel', img:'WebsiteImages-01.webp', price:149, mrp:299, rev:88, rating:4.7, cat:'Kitchen', badge:'deal', sizes:SZ_PACK(149,299)},
+  {id:'copper', name:'Copper, Bronze & Brass Cleaner', img:'Website_Images_Metal_Cleaner-01.webp', price:200, mrp:299, rev:272, rating:4.9, cat:'Home', sizes:[{label:'300 ML',price:200,mrp:299},{label:'500 ML (Value Pack)',price:299,mrp:399}]},
+  {id:'limescale', name:'Tap Cleaner & Limescale Remover', img:'WebsiteImagesLimeScale-01_7dde5639-eabb-439c-a335-dd2493db5827.webp', price:200, mrp:299, rev:8, rating:4.6, cat:'Kitchen', sizes:SZ_ML(200,299)},
+  {id:'toilet', name:'Non-Toxic Toilet Cleaner', img:'1lt_Website_Images_Toilet_Cleaner-01.webp', price:229, mrp:299, rev:14, rating:4.7, cat:'Home', sizes:SZ_PACK(229,299)},
+  {id:'fabric', name:'Natural Fabric Conditioner', img:'FabricConditioner2.webp', price:279, mrp:349, rev:97, rating:4.8, cat:'Laundry', sizes:SZ_PACK(279,349)},
+  {id:'oud', name:'Hydrating Handwash | Midnight Oud', img:'WebsiteImagesHydratingHandwash-01.webp', price:249, mrp:299, rev:46, rating:4.9, cat:'Skin', badge:'new'},
+  {id:'ocean', name:'Hydrating Handwash | Ocean Breeze', img:'WebsiteImagesHydratingHandwash-08.webp', price:99, mrp:299, rev:69, rating:4.8, cat:'Skin', badge:'deal'},
+  {id:'powder', name:'Washing Machine Cleaner Powder', img:'WebsiteImagesPowder-01.webp', price:200, mrp:299, rev:34, rating:4.7, cat:'Laundry'},
+  {id:'towel', name:'Reusable Kitchen Towel', img:'WebsiteImagesKitchenTowelBox-01_56256767-9a4f-4edd-a864-1089d83ba30e.webp', price:200, mrp:299, rev:41, rating:4.8, cat:'Kitchen'},
+  {id:'eraser', name:'Magic Eraser', img:'WebsiteImagesMagicEraser-01_82fc4c35-3fd2-4612-83f8-ab2018a141d6.webp', price:200, mrp:299, rev:120, rating:4.9, cat:'Home'},
+  {id:'copperspray', name:'Copper & Brass Cleaner Spray | 500ML', img:'Website_Images_Metal_Cleaner-08.webp', price:299, mrp:349, rev:22, rating:4.7, cat:'Home', badge:'new'},
+  {id:'mold', name:'Mold & Mildew Stain Remover Spray', img:'WebsiteImagesMold_Mildew-01.webp', price:200, mrp:299, rev:18, rating:4.6, cat:'Home', sold:true},
+  {id:'wool', name:'Wool & Winter Wear Shampoo | 500ML', img:'WebsiteImagesWoolenShampoo-01_e0ed7de7-616d-49e6-b992-a791bec2aeba.webp', price:200, mrp:299, rev:27, rating:4.7, cat:'Laundry', sold:true},
+];
+const find=id=>PRODUCTS.find(p=>p.id===id);
+// active variant helpers
+let variant={};                       // id -> chosen size index
+function pv(p){return p.sizes?p.sizes[variant[p.id]||0]:{price:p.price,mrp:p.mrp,label:''};}
+function upcharge(p){return p.sizes?(p.sizes[variant[p.id]||0].price-p.sizes[0].price):0;}
+
+// fixed tiers (kept) + per-extra add-on price beyond the top tier
+const TIERS=[{n:2,price:349},{n:3,price:499},{n:5,price:799}];
+const EXTRA=149;            // each item beyond 5
+const GIFT_AT=5;           // free Eterniti bottle threshold
+
+const QUICKSTART=[
+  {name:'Kitchen Essentials', sub:'Everything for a sparkling kitchen', items:['kitchen','dishwash','limescale']},
+  {name:'Laundry Care Box', sub:'Softer, fresher, plant-based wash', items:['detergent','fabric','powder']},
+  {name:'Complete Home (5)', sub:'Best value, unlocks your free gift', items:['kitchen','detergent','floor','toilet','oud']},
+];
+
+/* ================= STATE ================= */
+let bundle={};          // {id: qty}
+let selectedTier=3;     // anchored default = 3-pack
+let cat='all', q='';
+
+const count=()=>Object.values(bundle).reduce((a,b)=>a+b,0);
+// "regular" reference = sum of MRPs (the site anchors all savings on M.R.P.)
+const sumIndiv=()=>Object.entries(bundle).reduce((a,[id,q])=>a+pv(find(id)).mrp*q,0);
+// size upgrades beyond the standard pack are added on top of the flat tier price
+const upTotal=()=>Object.entries(bundle).reduce((a,[id,q])=>a+upcharge(find(id))*q,0);
+function bundleTotals(){
+  const c=count();
+  const tier=bundlePrice(c);
+  const ups=upTotal();
+  const base=tier+ups;
+  const reg=sumIndiv();
+  const finalPrice=base;
+  const saved=reg-finalPrice;
+  const pct=reg>0?Math.round(saved/reg*100):0;
+  return {c,tier,ups,base,reg,finalPrice,saved,pct};
+}
+
+// price ladder: keeps the 3 fixed tiers, extends smoothly beyond 5
+function bundlePrice(c){
+  if(c<2) return 0;
+  if(c===2) return 349;
+  if(c===3) return 499;
+  if(c===4) return 499+EXTRA;     // 648
+  return 799+(c-5)*EXTRA;          // 5 => 799, then +149 each
+}
+function tierLabel(c){
+  if(c>=5) return 'Buy 5 @ ₹799';
+  if(c>=3) return 'Buy 3 @ ₹499';
+  if(c>=2) return 'Buy 2 @ ₹349';
+  return '';
+}
+
+/* ================= RENDER: TIERS ================= */
+function refPrice(n){return n*299;} // "regular" reference = avg M.R.P. (matches site framing)
+function renderTiers(){
+  const labels={2:'Starter',3:'Most Loved',5:'Best Value'};
+  document.getElementById('tierWrap').innerHTML=TIERS.map(t=>{
+    const per=(t.price/t.n);
+    const save=refPrice(t.n)-t.price;
+    const pct=Math.round(save/refPrice(t.n)*100);
+    const pop=t.n===5;
+    const active=selectedTier===t.n;
+    return `<div class="tier ${pop?'popular':''} ${active?'active':''}" onclick="setTier(${t.n})">
+      ${pop?'<div class="flag">'+ICON.star+' Most Popular &amp; Free Gift</div>':''}
+      <div class="qty">${labels[t.n]}<small>Pick any ${t.n} products</small></div>
+      <div class="big"><sup>₹</sup>${t.price}</div>
+      <div class="perunit">just ₹${per.toFixed(0)} per product</div>
+      <div class="save">You save ₹${save} (${pct}% off)</div>
+      <div class="pick">${active?ICON.check+' Selected':'Choose this pack'}</div>
+    </div>`;
+  }).join('');
+}
+function setTier(n){selectedTier=n;renderTiers();document.getElementById('shop').scrollIntoView({behavior:'smooth'});render();}
+
+/* ================= RENDER: QUICKSTART ================= */
+function renderQS(){
+  document.getElementById('qsWrap').innerHTML=QUICKSTART.map((b,i)=>{
+    const items=b.items.map(find);
+    const c=items.length;
+    const price=bundlePrice(c);
+    const reg=items.reduce((a,p)=>a+p.price,0);
+    const pct=Math.round((reg-price)/reg*100);
+    return `<div class="qcard">
+      <div class="qimg">${items.map(p=>`<img src="${IMG}${p.img}" alt="${p.name}">`).join('')}</div>
+      <div class="qbody">
+        <h3>${b.name}</h3>
+        <div class="qmeta">${b.sub}<br><span class="muted">${items.map(p=>p.name.split('|')[0].trim()).join(', ')}</span></div>
+        <div class="qprice"><b>₹${price}</b><s>₹${reg}</s><span class="pct">${pct}% OFF</span></div>
+        <button class="qadd" onclick="loadQS(${i})">Load this box ${ICON.arrow}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function loadQS(i){
+  bundle={};
+  QUICKSTART[i].items.forEach(id=>bundle[id]=(bundle[id]||0)+1);
+  selectedTier=QUICKSTART[i].items.length>=5?5:QUICKSTART[i].items.length>=3?3:2;
+  renderTiers();
+  toast('Box loaded, review your bundle below');
+  render();
+  document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+}
+
+/* ================= RENDER: GRID ================= */
+function renderGrid(){
+  const list=PRODUCTS.filter(p=>(cat==='all'||p.cat===cat)&&(p.name.toLowerCase().includes(q)));
+  const html=list.map(p=>{
+    const inb=bundle[p.id]||0;
+    const v=pv(p);
+    const pct=Math.round((v.mrp-v.price)/v.mrp*100);
+    let action;
+    if(p.sold){action=`<div class="add" style="background:#f0f0f0;color:#999;cursor:default">Sold Out</div>`;}
+    else if(inb>0){action=`<div class="qtybox"><button onclick="dec('${p.id}')" aria-label="Remove one">${ICON.minus}</button><span>${inb} in bundle</span><button onclick="addItem('${p.id}')" aria-label="Add one">${ICON.plus}</button></div>`;}
+    else{action=`<button class="add" onclick="addItem('${p.id}')">${ICON.plus} Add to Bundle</button>`;}
+    const sizesel=(p.sizes&&!p.sold)?`<select class="sizesel" aria-label="Choose size" onchange="setVariant('${p.id}',this.selectedIndex)">${p.sizes.map((s,i)=>`<option ${i===(variant[p.id]||0)?'selected':''}>${s.label}</option>`).join('')}</select>`:'';
+    return `<div class="card ${p.sold?'sold':''}">
+      <div class="imgwrap">
+        ${p.badge?`<span class="badge ${p.badge}">${p.badge==='best'?'Bestseller':p.badge==='deal'?'Hot Deal':'New'}</span>`:''}
+        ${!p.sold?`<span class="savetag">${pct}% OFF</span>`:''}
+        <img src="${IMG}${p.img}" alt="${p.name}" loading="lazy">
+        ${p.sold?'<div class="soldout"><span>Sold Out</span></div>':''}
+      </div>
+      <div class="cbody">
+        <div class="rname">${p.name}</div>
+        <div class="rev"><span class="stars">${ICON.star}</span> ${p.rating} <span class="muted">(${p.rev})</span></div>
+        <div class="price"><b>₹${v.price}</b><s>₹${v.mrp}</s></div>
+        ${sizesel}
+        ${action}
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('grid').innerHTML=html||`<p class="muted" style="padding:20px">No products match. Try another category.</p>`;
+}
+
+/* ================= BUNDLE ACTIONS ================= */
+function addItem(id){
+  bundle[id]=(bundle[id]||0)+1;
+  const c=count();
+  // auto-advance the anchored tier as the box grows
+  if(c>=5)selectedTier=5;else if(c>=3&&selectedTier<3)selectedTier=3;
+  const p=find(id);
+  toast(`${p.name.split('|')[0].trim()} added`);
+  if(c===GIFT_AT)celebrate();
+  renderTiers();render();
+}
+function dec(id){bundle[id]--;if(bundle[id]<=0)delete bundle[id];render();}
+function clearBundle(){bundle={};render();}
+function setVariant(id,i){variant[id]=i;const p=find(id);if(bundle[id])toast(`${p.name.split('|')[0].trim()} set to ${pv(p).label}`);render();}
+
+/* ================= NUDGE LOGIC (the AOV engine) ================= */
+function nudge(c){
+  if(c===0) return {t:'Add any 2 products to unlock <b>Buy 2 @ ₹349</b>',done:false};
+  if(c===1) return {t:'Add <b>1 more</b> to unlock your first bundle, <b>Buy 2 @ ₹349</b>',done:false};
+  if(c===2) return {t:'Add <b>1 more</b> to unlock <b>Buy 3 @ ₹499</b>. Your 3rd product is just ₹150.',done:false};
+  if(c===3) return {t:'Add <b>2 more</b> to unlock <b>Buy 5 @ ₹799</b> plus a <b>FREE Eterniti bottle</b>',done:false};
+  if(c===4) return {t:'Just <b>1 more</b> to complete your 5-pack and unlock your <b>FREE gift</b>',done:false};
+  if(c===5) return {t:'5-pack unlocked, plus a FREE Eterniti bottle. Add more at ₹149 each.',done:true};
+  return {t:`${c} products bundled. Each extra is just ₹149.`,done:true};
+}
+
+/* ================= CHECKPOINT LADDER (shared: rail, sheet & mobile bar) ================= */
+function ladderHTML(c){
+  const maxN=5; // scale tops out at the 5-pack tier
+  const fillPct=Math.min(100,c/maxN*100);
+  const cks=TIERS.map(t=>{const pos=t.n/maxN*100;const hit=c>=t.n;return `<div class="ck ${hit?'hit':''} ${pos>=100?'ck-end':''}" style="left:${pos}%"><span class="ck-dot">${hit?ICON.check:t.n}</span><span class="ck-lab">₹${t.price}</span></div>`;}).join('');
+  return `<div class="ladder"><div class="bar"><i style="width:${fillPct}%"></i></div>${cks}</div>`;
+}
+// blank slot boxes that fill as products are added (shared: sheet + mobile bar carousel)
+function slotsHTML(){
+  const c=count();
+  const slotCount=Math.max(selectedTier,c);
+  const flat=[];Object.entries(bundle).forEach(([id,q])=>{for(let i=0;i<q;i++)flat.push(id)});
+  let s='';
+  for(let i=0;i<slotCount;i++){
+    if(flat[i]){const p=find(flat[i]);s+=`<div class="slot filled"><img src="${IMG}${p.img}" alt=""><span class="rm" onclick="dec('${flat[i]}')" aria-label="Remove">${ICON.close}</span></div>`;}
+    else s+=`<div class="slot"></div>`;
+  }
+  if(c>=2)s+=`<div class="slot add-extra" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" title="Add more" aria-label="Add more">${ICON.plus}</div>`;
+  return s;
+}
+
+/* ================= RENDER: SUMMARY ================= */
+function summaryHTML(){
+  const c=count();
+  const target=selectedTier;
+  const T=bundleTotals();
+  const price=T.tier, reg=T.reg, finalPrice=T.finalPrice, saved=T.saved, pct=T.pct;
+  const n=nudge(c);
+  const canCheckout=c>=2;
+
+  const slots=slotsHTML();
+
+  const lines=Object.entries(bundle).map(([id,q])=>{const p=find(id);const v=pv(p);return `<div class="li"><img src="${IMG}${p.img}" alt=""><span class="nm">${p.name.split('|')[0].trim()}${v.label?`<br><small class="muted" style="font-size:11px">${v.label}${upcharge(p)>0?` (+₹${upcharge(p)})`:''}</small>`:''}</span><span class="qc"><button onclick="dec('${id}')" aria-label="Remove one">${ICON.minus}</button>${q}<button onclick="addItem('${id}')" aria-label="Add one">${ICON.plus}</button></span></div>`;}).join('');
+
+  const giftUnlocked=c>=GIFT_AT;
+
+  return `
+  <div class="shead"><h3>Your Bundle: ${tierLabel(c)||'Pick 2 or more'}</h3><p>${c} product${c!==1?'s':''} added${c>0?', mix any category':''}</p></div>
+  <div class="prog">
+    ${ladderHTML(c)}
+    <div class="nudge ${n.done?'done':''}">${n.t}</div>
+  </div>
+  <div class="slots">${slots}</div>
+  ${lines?`<div class="lines">${lines}</div>`:''}
+  <div class="gift ${giftUnlocked?'unlocked':''}">
+    <span style="font-size:22px;display:flex;color:var(--gold)">${ICON.gift}</span>
+    <div>${giftUnlocked?'<b>FREE Eterniti bottle added!</b> Worth ₹499, yours free.':'Reach a <b>5-pack (₹799)</b> to get a <b>FREE Eterniti bottle</b> (₹499 value).'}</div>
+  </div>
+  <div class="totals">
+    ${c>=2?`<div class="r"><span>Bundle price (${tierLabel(c)})</span><span>₹${price}</span></div>`:''}
+    ${c>=2&&T.ups>0?`<div class="r"><span>Size upgrades</span><span>+₹${T.ups}</span></div>`:''}
+    ${c>=2?`<div class="r save"><span>You save vs. buying separately</span><span>₹${saved} (${pct}%)</span></div>`:''}
+    <div class="r"><span>Shipping</span><span style="color:var(--green);font-weight:700">FREE</span></div>
+    <div class="r grand"><span>Total</span><span><b>₹${c>=2?finalPrice:0}</b>${c>=2&&reg>finalPrice?`<s>₹${reg}</s>`:''}</span></div>
+  </div>
+  <button class="checkout" ${canCheckout?'':'disabled'} onclick="checkout()">${canCheckout?`Checkout ₹${finalPrice} ${ICON.arrow}`:`Add ${2-c} more to checkout`}</button>
+  ${c>=2&&c<5?`<div class="guar" style="color:var(--gold);font-weight:700;cursor:pointer" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Add ${5-c} more to upgrade to the 5-pack and unlock your FREE gift</div>`:''}
+  <div class="guar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg> 7-day easy returns and secure checkout</div>
+  `;
+}
+
+/* ================= TOTAL RENDER ================= */
+function render(){
+  renderGrid();
+  const h=summaryHTML();
+  document.getElementById('summary').innerHTML=h;
+  document.getElementById('summaryMobile').innerHTML=h;
+  const c=count();
+  document.getElementById('hdrCount').textContent=c;
+  // mobile bar
+  const n=nudge(c);
+  document.getElementById('mSlots').innerHTML=slotsHTML();
+  document.getElementById('mPtxt').innerHTML=n.t;
+  document.getElementById('mLadder').innerHTML=ladderHTML(c);
+  const finalP=bundleTotals().finalPrice;
+  const mco=document.getElementById('mCheckout');
+  mco.disabled=c<2;
+  document.getElementById('mCoTop').textContent=c>=2?'Checkout':'Add';
+  document.getElementById('mCoSub').textContent=c>=2?`₹${finalP}`:`${2-c} more`;
+}
+
+/* ================= UI WIRING ================= */
+document.querySelectorAll('.chip').forEach(ch=>ch.addEventListener('click',()=>{
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  ch.classList.add('active');cat=ch.dataset.cat;renderGrid();
+}));
+document.getElementById('search').addEventListener('input',e=>{q=e.target.value.toLowerCase();renderGrid();});
+document.getElementById('cartBtn').addEventListener('click',()=>{
+  if(window.innerWidth<1080)openSheet();
+  else document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+});
+
+/* ================= SHEET ================= */
+function openSheet(){document.getElementById('sheetBg').classList.add('open');document.getElementById('sheet').classList.add('open');}
+function closeSheet(){document.getElementById('sheetBg').classList.remove('open');document.getElementById('sheet').classList.remove('open');}
+
+/* ================= TOAST + CONFETTI + CHECKOUT ================= */
+let toastT;
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1900);}
+function celebrate(){
+  toast('Nice! 5-pack unlocked, free gift added.');
+  const c=document.createElement('div');c.className='confetti';
+  const cols=['#c7981f','#2c874a','#108474','#efd080','#00605e'];
+  for(let i=0;i<70;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.background=cols[i%cols.length];s.style.animationDuration=(1.6+Math.random()*1.6)+'s';s.style.animationDelay=(Math.random()*0.4)+'s';c.appendChild(s);}
+  document.body.appendChild(c);setTimeout(()=>c.remove(),3600);
+}
+function checkout(){
+  toast(`Proceeding to checkout, ₹${bundleTotals().finalPrice} (demo)`);
+}
+function news(){const e=document.getElementById('newsEmail').value;if(/^[^@]+@[^@]+\.[^@]+$/.test(e)){toast('You\'re in! Check your inbox for ₹100 off.');document.getElementById('newsEmail').value='';}else toast('Please enter a valid email');}
+
+/* ================= TRUST MARQUEE (seamless infinite, any width) ================= */
+const TRUST=[
+  {svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="1.8"/><circle cx="18.5" cy="18.5" r="1.8"/></svg>', label:'Free Shipping'},
+  {svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C7 6 5 9 5 13a7 7 0 0 0 14 0c0-4-2-7-7-11z"/></svg>', label:'100% Plant-Based'},
+  {svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>', label:'Skin Safe &amp; Pet Friendly'},
+  {svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.2-8.5"/><path d="M9 11l3 3 9-9"/></svg>', label:'Easy 7-Day Returns'},
+];
+let mqT;
+function buildMarquee(){
+  const track=document.getElementById('tmTrack');
+  if(!track)return;
+  const unit=TRUST.map(t=>`<span class="tm-item">${t.svg} ${t.label}</span>`).join('');
+  track.style.animation='none';
+  track.innerHTML=unit;
+  const unitW=track.scrollWidth||640;
+  // repeat the set until ONE half is wider than the viewport, then mirror it for a seamless loop
+  const reps=Math.max(2,Math.ceil((window.innerWidth+240)/unitW));
+  const half=unit.repeat(reps);
+  track.innerHTML=half+half;
+  const halfW=track.scrollWidth/2;
+  void track.offsetWidth; // reflow so the animation restarts cleanly
+  track.style.animation='';
+  track.style.animationDuration=Math.max(34,Math.round(halfW/45))+'s';
+}
+window.addEventListener('resize',()=>{clearTimeout(mqT);mqT=setTimeout(buildMarquee,180)});
+
+/* ================= INIT ================= */
+renderTiers();renderQS();render();buildMarquee();
+</script>
+</body>
+</html>
